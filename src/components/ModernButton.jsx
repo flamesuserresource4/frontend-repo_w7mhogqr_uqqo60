@@ -1,33 +1,114 @@
 import React from 'react'
 
-function ModernButton({ children, onClick, disabled = false, loading = false, className = '' }) {
+// C-BRAIN Modern Button
+// Props:
+// - variant: 'solid' | 'ghost'
+// - size: 'sm' | 'md' | 'lg'
+// - loading: boolean
+// - disabled: boolean
+// - showSuccess: boolean (brief green glow + checkmark)
+// - showError: boolean (red glow + shake)
+// - leftIcon: ReactNode (e.g., sparkles icon)
+// - children: label text
+function ModernButton({
+  children,
+  onClick,
+  disabled = false,
+  loading = false,
+  variant = 'solid',
+  size = 'md',
+  showSuccess = false,
+  showError = false,
+  leftIcon = null,
+  className = '',
+}) {
+  const sizeClasses = {
+    sm: 'h-8 text-xs px-3 rounded-lg',       // 32px
+    md: 'h-10 text-sm px-4 rounded-xl',      // 40px
+    lg: 'h-12 text-base px-5 rounded-2xl',   // 48px
+  }[size]
+
+  const base = [
+    'relative inline-flex items-center justify-center gap-2 select-none',
+    'font-medium transition-all duration-300 ease-out',
+    'disabled:opacity-40 disabled:cursor-not-allowed',
+    sizeClasses,
+  ]
+
+  const solid = [
+    // Glass + gradient aura in C-BRAIN purple/pink
+    'text-white border border-white/10 backdrop-blur-xl',
+    'bg-white/5',
+    'shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_10px_30px_rgba(0,0,0,0.35)]',
+    'before:absolute before:inset-0 before:rounded-inherit before:bg-gradient-to-r before:from-purple-600/40 before:via-pink-500/30 before:to-purple-600/40 before:opacity-0 hover:before:opacity-100 before:transition-opacity',
+    'after:pointer-events-none after:absolute after:-inset-px after:rounded-[inherit] after:bg-[radial-gradient(160px_90px_at_0%_0%,rgba(168,85,247,0.18),transparent_60%),radial-gradient(160px_90px_at_100%_100%,rgba(236,72,153,0.18),transparent_60%)] after:opacity-0 hover:after:opacity-100 after:transition-opacity',
+  ]
+
+  const ghost = [
+    'text-white/90 border border-white/10 bg-transparent backdrop-blur-xl',
+    'hover:bg-white/5 hover:text-white',
+    'shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]',
+    'hover:border-pink-400/40 hover:shadow-[0_6px_24px_rgba(236,72,153,0.15)]',
+  ]
+
+  const stateGlow = showSuccess
+    ? 'ring-2 ring-emerald-400/70 shadow-[0_0_0_6px_rgba(16,185,129,0.15)]'
+    : showError
+    ? 'ring-2 ring-rose-500/70 shadow-[0_0_0_6px_rgba(244,63,94,0.18)] animate-cb-shake'
+    : ''
+
   return (
     <button
       onClick={onClick}
       disabled={disabled || loading}
       className={[
-        'relative inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3',
-        'font-medium text-sm transition-all duration-300 ease-out',
-        'bg-slate-900/60 text-blue-100',
-        'border border-slate-700/70',
-        'shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_8px_30px_rgba(2,6,23,0.3)]',
-        'hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_40px_rgba(2,6,23,0.4)]',
-        'hover:border-blue-500/50 hover:text-white',
-        'before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-br before:from-blue-500/20 before:to-indigo-500/10 before:opacity-0 hover:before:opacity-100 before:transition-opacity',
-        'after:absolute after:-inset-px after:rounded-[14px] after:bg-[radial-gradient(120px_80px_at_0%_0%,rgba(59,130,246,0.15)_0,transparent_60%),radial-gradient(120px_80px_at_100%_100%,rgba(99,102,241,0.15)_0,transparent_60%)] after:opacity-0 hover:after:opacity-100 after:transition-opacity',
-        'disabled:opacity-60 disabled:cursor-not-allowed',
+        ...base,
+        ...(variant === 'ghost' ? ghost : solid),
+        stateGlow,
         className,
       ].join(' ')}
     >
+      {/* Status icons overlay */}
       <span className="relative z-10 inline-flex items-center gap-2">
+        {/* Loading spinner */}
         {loading && (
-          <svg className="h-4 w-4 animate-spin text-blue-300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle className="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+          <svg className="h-4 w-4 animate-spin text-pink-300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path d="M22 12a10 10 0 00-10-10" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="opacity-90" />
           </svg>
         )}
+
+        {/* Success checkmark */}
+        {!loading && showSuccess && (
+          <svg className="h-4 w-4 text-emerald-400 transition-opacity" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        )}
+
+        {/* Error icon */}
+        {!loading && !showSuccess && showError && (
+          <svg className="h-4 w-4 text-rose-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 9v4m0 4h.01M10.29 3.86l-7.5 13A2 2 0 004.5 20h15a2 2 0 001.71-3.14l-7.5-13a2 2 0 00-3.42 0z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        )}
+
+        {/* Left icon (e.g., sparkles) when not showing success/error */}
+        {!loading && !showSuccess && !showError && leftIcon}
+
         {children}
       </span>
+
+      {/* Inline keyframes for shake animation to avoid global CSS edits */}
+      <style>{`
+        @keyframes cb-shake {
+          0%, 100% { transform: translateX(0); }
+          20% { transform: translateX(-2px); }
+          40% { transform: translateX(2px); }
+          60% { transform: translateX(-2px); }
+          80% { transform: translateX(2px); }
+        }
+        .animate-cb-shake { animation: cb-shake 220ms ease-in-out; }
+      `}</style>
     </button>
   )
 }
