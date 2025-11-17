@@ -92,28 +92,29 @@ function App() {
   const isDisabled = loading || input.trim().length === 0
 
   return (
-    <div className="min-h-screen relative text-white">
-      {/* Grid + gradient identity */}
+    <div className="min-h-screen relative text-white tracking-wide">
+      {/* Deep dark background system */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(circle_at_1px_1px,white_1px,transparent_1px)] bg-[size:24px_24px]" />
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-pink-500 to-purple-600 opacity-[0.12]" />
-        <div className="pointer-events-none absolute inset-0 [background:radial-gradient(700px_300px_at_50%_-10%,rgba(168,85,247,0.25),transparent_60%),radial-gradient(600px_320px_at_110%_30%,rgba(236,72,153,0.18),transparent_60%)]" />
+        {/* Base deep space layer */}
+        <div className="absolute inset-0 bg-[#0a0a1f]" />
+        {/* Subtle radial gradient overlay (purple/pink accents, ultra soft) */}
+        <div className="absolute inset-0 bg-[radial-gradient(800px_400px_at_20%_-10%,rgba(88,28,135,0.10),transparent_60%),radial-gradient(900px_500px_at_120%_20%,rgba(131,24,67,0.05),transparent_70%)]" />
+        {/* Grid pattern at ~2% opacity */}
+        <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(circle_at_1px_1px,white_1px,transparent_1px)] bg-[size:24px_24px]" />
       </div>
 
       <div className="relative mx-auto max-w-4xl px-6 py-10">
-        {/* Header */}
-        <header className="mb-8 flex items-center justify-between">
+        {/* Header with stronger separation */}
+        <header className="mb-8 flex items-center justify-between rounded-2xl bg-black/20 px-4 py-3 border border-white/5 backdrop-blur-xl shadow-xl shadow-black/20">
           <div className="flex items-center gap-3">
             <div className="h-9 w-9 rounded-xl border border-white/10 backdrop-blur-xl bg-white/5 shadow-[0_10px_30px_rgba(168,85,247,0.25)]" />
             <div>
-              <h1 className="text-xl font-semibold tracking-tight">C-BRAIN Creative Chat</h1>
-              <p className="text-xs text-white/70">Premium. Minimal. Intentional.</p>
+              <h1 className="text-xl font-semibold text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.6)]">C-BRAIN Creative Chat</h1>
+              <p className="text-xs text-gray-100/80">Premium. Minimal. Intentional.</p>
             </div>
           </div>
           <div className="hidden md:flex items-center gap-2">
-            <ModernButton variant="ghost" size="sm" leftIcon={<SearchIcon />}>
-              Quick Search Tools
-            </ModernButton>
+            <ModernButton variant="ghost" size="sm" leftIcon={<SearchIcon />}>Quick Search Tools</ModernButton>
             <ModernButton
               variant="ghost"
               size="md"
@@ -126,28 +127,28 @@ function App() {
           </div>
         </header>
 
-        {/* Chat card */}
-        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.45)]">
+        {/* Chat surface hierarchy */}
+        <div className="rounded-2xl border border-white/[0.08] bg-white/[0.01] backdrop-blur-2xl shadow-xl shadow-black/20">
           {/* Messages */}
           <div ref={listRef} className="max-h-[60vh] overflow-y-auto p-6 space-y-4">
             {messages.map((m, idx) => (
               <div key={idx} className={[ 'flex w-full', m.role === 'user' ? 'justify-end' : 'justify-start' ].join(' ')}>
                 <div className={[
-                  'group relative max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed',
-                  'border border-white/10 backdrop-blur-xl shadow-sm',
+                  'group relative max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed transition-all duration-200 ease-out',
+                  // AI vs User bubble styling
                   m.role === 'user'
-                    ? 'bg-gradient-to-br from-purple-600/70 via-pink-500/70 to-purple-600/70 text-white shadow-[0_6px_24px_rgba(236,72,153,0.18)]'
-                    : 'bg-white/5 text-white/90'
+                    ? 'text-white shadow-xl shadow-black/20 border border-white/10 bg-gradient-to-br from-purple-600/60 via-pink-500/60 to-purple-600/60 mix-blend-screen'
+                    : 'text-gray-100 backdrop-blur-lg bg-white/[0.04] border border-white/[0.06] shadow-md shadow-purple-400/5'
                 ].join(' ')}>
                   <div className="animate-[fadeIn_150ms_ease-out]">{m.content}</div>
-                  <div className="absolute -bottom-5 text-[10px] text-white/40 opacity-0 group-hover:opacity-100 transition-opacity">{new Date(m.ts).toLocaleTimeString()}</div>
+                  <div className="absolute -bottom-5 text-[10px] text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">{new Date(m.ts).toLocaleTimeString()}</div>
                 </div>
               </div>
             ))}
 
             {loading && (
               <div className="flex justify-start">
-                <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/80 backdrop-blur-xl">
+                <div className="flex items-center gap-2 rounded-2xl border border-white/[0.06] bg-white/[0.04] px-4 py-3 text-sm text-gray-100 backdrop-blur-lg shadow-md shadow-purple-400/5">
                   <span className="flex items-center gap-1">
                     <span className="h-2 w-2 rounded-full bg-pink-400 animate-bounce" />
                     <span className="h-2 w-2 rounded-full bg-purple-400 animate-bounce [animation-delay:120ms]" />
@@ -160,7 +161,7 @@ function App() {
           </div>
 
           {/* Composer */}
-          <div className="border-t border-white/10 p-4">
+          <div className="border-t border-white/[0.10] p-4 bg-white/[0.03] backdrop-blur-xl">
             <div className="group/composer flex items-end gap-3">
               <textarea
                 ref={inputRef}
@@ -169,7 +170,7 @@ function App() {
                 onKeyDown={handleKeyDown}
                 placeholder="Write a prompt… (Ctrl/⌘ + Enter to send)"
                 rows={1}
-                className="min-h-[44px] w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/50 outline-none ring-0 focus:border-pink-400/50 focus:shadow-[0_0_0_4px_rgba(236,72,153,0.08)]"
+                className="min-h-[44px] w-full resize-none rounded-xl border border-white/10 bg-transparent px-4 py-3 text-sm text-gray-100 placeholder:text-gray-500 outline-none ring-0 focus:ring-2 focus:ring-purple-500/40 focus:shadow-lg focus:shadow-purple-500/10"
               />
 
               <div className="flex items-center gap-2 opacity-100 md:opacity-0 md:group-hover/composer:opacity-100 transition-opacity">
@@ -194,13 +195,13 @@ function App() {
         </div>
 
         {/* Footer */}
-        <div className="mt-6 flex items-center justify-between text-xs text-white/70">
+        <div className="mt-6 flex items-center justify-between text-xs text-gray-400">
           <p>Powered by C-BRAIN Intelligence • Claude Sonnet 4.5</p>
           <p>Future of creative tools — Prototype mode</p>
         </div>
       </div>
 
-      {/* Local keyframes for message fade-in */}
+      {/* Local keyframes + transition tuning */}
       <style>{`
         @keyframes fadeIn { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-// C-BRAIN Modern Button
+// C-BRAIN Modern Button (Dark Mode Refined)
 // Props:
 // - variant: 'solid' | 'ghost'
 // - size: 'sm' | 'md' | 'lg'
@@ -30,31 +30,35 @@ function ModernButton({
 
   const base = [
     'relative inline-flex items-center justify-center gap-2 select-none',
-    'font-medium transition-all duration-300 ease-out',
+    'font-medium transition-all duration-200 ease-out',
     'disabled:opacity-40 disabled:cursor-not-allowed',
+    'tracking-wide',
     sizeClasses,
   ]
 
+  // Primary button with purple-pink gradient accent, stronger shadows for dark
   const solid = [
-    // Glass + gradient aura in C-BRAIN purple/pink
     'text-white border border-white/10 backdrop-blur-xl',
-    'bg-white/5',
-    'shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_10px_30px_rgba(0,0,0,0.35)]',
-    'before:absolute before:inset-0 before:rounded-inherit before:bg-gradient-to-r before:from-purple-600/40 before:via-pink-500/30 before:to-purple-600/40 before:opacity-0 hover:before:opacity-100 before:transition-opacity',
-    'after:pointer-events-none after:absolute after:-inset-px after:rounded-[inherit] after:bg-[radial-gradient(160px_90px_at_0%_0%,rgba(168,85,247,0.18),transparent_60%),radial-gradient(160px_90px_at_100%_100%,rgba(236,72,153,0.18),transparent_60%)] after:opacity-0 hover:after:opacity-100 after:transition-opacity',
+    'bg-gradient-to-br from-purple-600 via-pink-500 to-purple-600',
+    'shadow-xl shadow-purple-500/20',
+    // Glass veil so gradient feels embedded
+    'before:absolute before:inset-0 before:rounded-[inherit] before:bg-white/5 before:opacity-10 before:pointer-events-none',
+    // Aura glows on hover
+    'hover:shadow-2xl hover:shadow-purple-500/30',
   ]
 
+  // Ghost button tuned for dark surfaces
   const ghost = [
     'text-white/90 border border-white/10 bg-transparent backdrop-blur-xl',
     'hover:bg-white/5 hover:text-white',
-    'shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]',
-    'hover:border-pink-400/40 hover:shadow-[0_6px_24px_rgba(236,72,153,0.15)]',
+    'shadow-xl',
+    'hover:border-white/20',
   ]
 
   const stateGlow = showSuccess
-    ? 'ring-2 ring-emerald-400/70 shadow-[0_0_0_6px_rgba(16,185,129,0.15)]'
+    ? 'ring-2 ring-emerald-400/60 shadow-[0_0_24px_rgba(16,185,129,0.25)]'
     : showError
-    ? 'ring-2 ring-rose-500/70 shadow-[0_0_0_6px_rgba(244,63,94,0.18)] animate-cb-shake'
+    ? 'ring-2 ring-rose-500/70 shadow-[0_0_28px_rgba(244,63,94,0.28)] animate-cb-shake'
     : ''
 
   return (
